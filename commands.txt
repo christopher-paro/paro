@@ -13,6 +13,9 @@ Full private install (requires GitHub token/private repo access):
 Work profile (private + work overlay):
   curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile work
 
+Pinned v0.1.1 lite install:
+  curl -fsSL https://github.com/christopher-paro/paro/releases/download/v0.1.1/boot.sh | sh -s -- --profile lite
+
 Pinned v0.1.0 lite install:
   curl -fsSL https://github.com/christopher-paro/paro/releases/download/v0.1.0/boot.sh | sh -s -- --profile lite
 

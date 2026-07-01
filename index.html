@@ -167,6 +167,7 @@
       <div class="section-head"><h2>Versions</h2><p>Install latest or pin an older release. The tab layout is ready for more releases as they are published.</p></div>
       <div class="tabs" role="tablist" aria-label="Release versions">
         <button class="tab active" type="button" role="tab" data-version="latest">Latest</button>
+        <button class="tab" type="button" role="tab" data-version="v0.1.1">v0.1.1</button>
         <button class="tab" type="button" role="tab" data-version="v0.1.0">v0.1.0</button>
       </div>
       <div class="version-panel">
@@ -196,6 +197,13 @@ sha256sum -c checksums.txt --ignore-missing</code></pre></div>
         cmdSubtitle: 'tracks newest release',
         command: 'curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite',
         checksums: 'curl -fsSLO https://dots.paroslab.io/latest/checksums.txt\nsha256sum -c checksums.txt --ignore-missing'
+      },
+      'v0.1.1': {
+        title: 'v0.1.1',
+        cmdTitle: 'Install v0.1.1',
+        cmdSubtitle: 'pinned immutable release',
+        command: 'curl -fsSL https://github.com/christopher-paro/paro/releases/download/v0.1.1/boot.sh | sh -s -- --profile lite',
+        checksums: 'curl -fsSLO https://github.com/christopher-paro/paro/releases/download/v0.1.1/checksums.txt\nsha256sum -c checksums.txt --ignore-missing'
       },
       'v0.1.0': {
         title: 'v0.1.0',

@@ -3,33 +3,224 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>paro install</title>
+  <meta name="color-scheme" content="dark">
+  <title>dots — Paro dotfiles installer</title>
   <style>
-    :root { color-scheme: dark; --bg:#080b10; --panel:#111827; --line:#263244; --text:#f2f7ff; --muted:#9aa8ba; --green:#47e38a; --blue:#7cb7ff; }
+    :root {
+      --bg: #06080d;
+      --bg2: #0b1220;
+      --panel: rgba(13, 20, 34, 0.72);
+      --panel-strong: rgba(18, 27, 45, 0.92);
+      --line: rgba(148, 163, 184, 0.18);
+      --line-strong: rgba(148, 163, 184, 0.28);
+      --text: #eef6ff;
+      --muted: #9fb0c7;
+      --muted2: #6f819a;
+      --green: #54f3a4;
+      --cyan: #71ddff;
+      --violet: #b99cff;
+      --amber: #ffd479;
+      --shadow: 0 30px 120px rgba(0, 0, 0, 0.48);
+      --radius: 24px;
+    }
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: radial-gradient(circle at 20% 0%, #183454 0, #080b10 46%, #050608 100%); color: var(--text); font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; }
-    main { width: min(880px, calc(100vw - 32px)); padding: 36px; border: 1px solid var(--line); border-radius: 24px; background: rgba(17,24,39,.82); box-shadow: 0 24px 80px rgba(0,0,0,.4); }
-    h1 { margin: 0 0 8px; font-size: clamp(40px, 8vw, 80px); letter-spacing: -.06em; }
-    p { color: var(--muted); margin: 8px 0 22px; }
-    pre { overflow: auto; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: #05070b; color: var(--green); }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-    a { color: var(--blue); }
-    .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 24px; }
-    .card { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.03); }
-    .label { color: var(--text); font-weight: 700; }
-    .small { font-size: 14px; color: var(--muted); }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% -8%, rgba(113, 221, 255, .32), transparent 34rem),
+        radial-gradient(circle at 88% 4%, rgba(185, 156, 255, .24), transparent 31rem),
+        linear-gradient(180deg, #07101e 0%, var(--bg) 52%, #05070a 100%);
+      font: 16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: inherit; text-decoration: none; }
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(180deg, rgba(6,8,13,.86), rgba(6,8,13,.58));
+      border-bottom: 1px solid rgba(148,163,184,.12);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 760; letter-spacing: -.03em; }
+    .logo {
+      display: grid; place-items: center; width: 42px; height: 42px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(84,243,164,.2), rgba(113,221,255,.18));
+      border: 1px solid rgba(113,221,255,.3); box-shadow: 0 0 38px rgba(84,243,164,.12);
+      color: var(--green); font: 900 22px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .nav-links { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-links a { color: var(--muted); padding: 9px 12px; border-radius: 999px; font-size: 14px; }
+    .nav-links a:hover { background: rgba(148,163,184,.10); color: var(--text); }
+    .hero { padding: 74px 0 42px; display: grid; grid-template-columns: 1.08fr .92fr; gap: 34px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--green); font-weight: 720; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+    .pulse { width: 9px; height: 9px; border-radius: 99px; background: var(--green); box-shadow: 0 0 0 8px rgba(84,243,164,.12), 0 0 22px rgba(84,243,164,.7); }
+    h1 { margin: 18px 0 16px; font-size: clamp(48px, 9vw, 104px); line-height: .88; letter-spacing: -.08em; max-width: 820px; }
+    .lead { margin: 0; color: #b6c5d9; font-size: clamp(18px, 2vw, 22px); max-width: 720px; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 46px; padding: 0 18px; border-radius: 999px; font-weight: 760; border: 1px solid var(--line-strong); color: var(--text); background: rgba(255,255,255,.04); }
+    .button.primary { border-color: rgba(84,243,164,.5); color: #04120a; background: linear-gradient(135deg, var(--green), #87f7d6); box-shadow: 0 18px 50px rgba(84,243,164,.16); }
+    .button:hover { transform: translateY(-1px); }
+    .terminal-card { border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, rgba(16,24,39,.92), rgba(4,7,12,.96)); box-shadow: var(--shadow); overflow: hidden; }
+    .term-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    .dots { display: flex; gap: 7px; } .dots span { width: 11px; height: 11px; border-radius: 99px; background: #ff6b6b; } .dots span:nth-child(2){background:#ffd166}.dots span:nth-child(3){background:#54f3a4}
+    pre { margin: 0; overflow: auto; padding: 20px; color: #d8ffe9; background: transparent; font-size: 14px; }
+    .terminal-card pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    .copy-row { display:flex; gap:10px; align-items:stretch; border:1px solid var(--line); border-radius:18px; background:rgba(2,6,12,.72); overflow:hidden; margin-top:18px; }
+    .copy-row code { flex:1; padding:16px; overflow:auto; white-space:nowrap; color:#d8ffe9; }
+    .copy { border:0; border-left:1px solid var(--line); padding:0 16px; color:var(--text); background:rgba(148,163,184,.10); cursor:pointer; font-weight:750; }
+    .copy:hover { background:rgba(148,163,184,.16); }
+    section { padding: 44px 0; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:22px; margin-bottom:18px; }
+    .section-head h2 { margin:0; font-size: clamp(28px, 4vw, 46px); letter-spacing:-.05em; }
+    .section-head p { margin:0; color:var(--muted); max-width:620px; }
+    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
+    .card { border:1px solid var(--line); border-radius:22px; background:var(--panel); padding:22px; box-shadow: 0 14px 50px rgba(0,0,0,.18); }
+    .card h3 { margin:0 0 8px; letter-spacing:-.03em; font-size:19px; }
+    .card p { margin:0; color:var(--muted); }
+    .pill { display:inline-flex; align-items:center; border:1px solid var(--line-strong); color:var(--muted); border-radius:999px; padding:4px 9px; font-size:12px; margin-bottom:14px; background:rgba(255,255,255,.03); }
+    .steps { display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; counter-reset: step; }
+    .step { counter-increment: step; position:relative; padding:20px; border-radius:20px; border:1px solid var(--line); background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); }
+    .step::before { content: counter(step); display:grid; place-items:center; width:32px; height:32px; border-radius:11px; margin-bottom:16px; color:#03120a; font-weight:900; background:var(--green); }
+    .step strong { display:block; margin-bottom:6px; }
+    .step span { color:var(--muted); font-size:14px; }
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; padding:8px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.035); }
+    .tab { border:0; cursor:pointer; border-radius:999px; padding:10px 14px; color:var(--muted); background:transparent; font-weight:800; }
+    .tab.active { color:#05140c; background:var(--green); }
+    .version-panel { margin-top:16px; display:grid; grid-template-columns: .9fr 1.1fr; gap:16px; align-items:start; }
+    .release-meta { border:1px solid var(--line); border-radius:22px; background:var(--panel); padding:22px; }
+    .release-meta dl { margin:0; display:grid; gap:12px; } .release-meta dt { color:var(--muted2); font-size:12px; text-transform:uppercase; letter-spacing:.08em; } .release-meta dd { margin:3px 0 0; }
+    .command-list { display:grid; gap:12px; }
+    .cmd { border:1px solid var(--line); border-radius:18px; background:rgba(3,7,13,.72); overflow:hidden; }
+    .cmd-head { display:flex; justify-content:space-between; gap:12px; padding:12px 14px; border-bottom:1px solid var(--line); color:var(--muted); font-size:13px; }
+    .cmd pre { padding:14px; font-size:13px; }
+    .note { color:var(--muted); font-size:14px; margin-top:12px; }
+    .footer { padding:36px 0 54px; color:var(--muted); border-top:1px solid rgba(148,163,184,.12); margin-top:30px; }
+    .footer .shell { display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+    @media (max-width: 900px) { .hero, .version-panel { grid-template-columns:1fr; } .grid, .steps { grid-template-columns:1fr 1fr; } }
+    @media (max-width: 620px) { .shell { width:min(100% - 22px, 1180px); } .nav-links { display:none; } .hero { padding-top:48px; } .grid, .steps { grid-template-columns:1fr; } .card, .step { padding:18px; } .section-head { display:block; } .tabs { border-radius:20px; } .tab { flex:1; } }
   </style>
 </head>
 <body>
-  <main>
-    <h1>paro</h1>
-    <p>Tokenless install channel for Christopher Paro's public/lite dotfiles bundle.</p>
-    <pre><code>curl -fsSL https://paro.paroslab.io/install | sh -s -- --profile lite</code></pre>
-    <div class="grid">
-      <div class="card"><div class="label">Install script</div><div class="small"><a href="/install">/install</a> and <a href="/boot.sh">/boot.sh</a></div></div>
-      <div class="card"><div class="label">Latest assets</div><div class="small"><a href="/latest/checksums.txt">/latest/checksums.txt</a> redirects to the current GitHub release.</div></div>
-      <div class="card"><div class="label">Source</div><div class="small"><a href="https://github.com/christopher-paro/paro">github.com/christopher-paro/paro</a></div></div>
+  <nav class="nav">
+    <div class="shell nav-inner">
+      <a class="brand" href="#top" aria-label="dots home"><span class="logo">·</span><span>dots</span></a>
+      <div class="nav-links">
+        <a href="#install">Install</a><a href="#commands">Commands</a><a href="#versions">Versions</a><a href="https://github.com/christopher-paro/paro">GitHub</a>
+      </div>
     </div>
+  </nav>
+  <main id="top" class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow"><span class="pulse"></span> Tokenless dotfiles installer</div>
+        <h1>Install your working shell in one command.</h1>
+        <p class="lead">dots is the public install channel for Paro's portable dotfiles: a tiny bootstrap script, prebuilt <code>paro</code> CLI, Neovim config, and container-safe keymaps.</p>
+        <div class="actions"><a class="button primary" href="#install">Start install</a><a class="button" href="#versions">Pick a version</a><a class="button" href="/gh">View source</a></div>
+      </div>
+      <div class="terminal-card" aria-label="install command terminal">
+        <div class="term-top"><div class="dots"><span></span><span></span><span></span></div><span>dots.paroslab.io</span></div>
+        <pre><code>$ curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
+==> platform: linux/amd64 profile: lite
+==> downloading paro binary
+==> installing nvim + fast CLI defaults</code></pre>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="section-head"><h2>Install</h2><p>Use the lite profile anywhere you want the public, tokenless setup: containers, throwaway machines, servers, or a new workstation baseline.</p></div>
+      <div class="copy-row"><code id="quick-command">curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code><button class="copy" data-copy="quick-command">Copy</button></div>
+      <div class="steps" style="margin-top:18px">
+        <div class="step"><strong>Fetch installer</strong><span><code>/install</code> serves the same audited <code>boot.sh</code> script with a shell-script content type.</span></div>
+        <div class="step"><strong>Detect platform</strong><span>The script chooses linux/darwin and amd64/arm64 release assets automatically.</span></div>
+        <div class="step"><strong>Download assets</strong><span>Binary and lite config bundle stay in GitHub Releases for pinning and checksums.</span></div>
+        <div class="step"><strong>Apply profile</strong><span><code>paro install --profile lite</code> links the public config into your home directory.</span></div>
+      </div>
+    </section>
+
+    <section id="commands">
+      <div class="section-head"><h2>Commands</h2><p>These are the existing bootstrap modes exposed by <code>boot.sh</code>. Lite is public; full and work use the private dotfiles release or authenticated fallback.</p></div>
+      <div class="grid">
+        <div class="card"><span class="pill">public · no token</span><h3>Lite install</h3><p>Installs the CLI, Neovim, fast search tools, and safe keymaps.</p></div>
+        <div class="card"><span class="pill">private · token</span><h3>Full install</h3><p>Installs the private desktop/dev environment from <code>christopher-paro/.paro</code>.</p></div>
+        <div class="card"><span class="pill">private · token</span><h3>Work profile</h3><p>Runs the full install with the additional work overlay enabled.</p></div>
+      </div>
+      <div class="command-list" style="margin-top:16px">
+        <div class="cmd"><div class="cmd-head"><strong>Lite</strong><span>recommended public path</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Full</strong><span>private release + GitHub token</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Work</strong><span>private release + work overlay</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile work</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Dry run</strong><span>show actions without changing files</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --dry-run --profile lite</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Local testing</strong><span>use a checked-out repo</span></div><pre><code>sh boot.sh --local /path/to/paro/repo --profile lite</code></pre></div>
+      </div>
+    </section>
+
+    <section id="versions">
+      <div class="section-head"><h2>Versions</h2><p>Install latest or pin an older release. The tab layout is ready for more releases as they are published.</p></div>
+      <div class="tabs" role="tablist" aria-label="Release versions">
+        <button class="tab active" type="button" role="tab" data-version="latest">Latest</button>
+        <button class="tab" type="button" role="tab" data-version="v0.1.0">v0.1.0</button>
+      </div>
+      <div class="version-panel">
+        <div class="release-meta">
+          <dl>
+            <div><dt>Selected</dt><dd id="version-title">Latest release</dd></div>
+            <div><dt>Assets</dt><dd><code>boot.sh</code>, <code>checksums.txt</code>, <code>paro-lite.tar.gz</code>, platform binaries</dd></div>
+            <div><dt>Profiles</dt><dd><code>lite</code>, <code>full</code>, <code>work</code></dd></div>
+            <div><dt>Verify</dt><dd><a href="/latest/checksums.txt">checksums.txt</a></dd></div>
+          </dl>
+          <p class="note">Pinned installs download <code>boot.sh</code> from the immutable GitHub release tag, while <code>/install</code> tracks the current site bootstrap.</p>
+        </div>
+        <div class="command-list">
+          <div class="cmd"><div class="cmd-head"><strong id="version-cmd-title">Install latest</strong><span id="version-cmd-subtitle">tracks newest release</span></div><pre><code id="version-command">curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code></pre></div>
+          <div class="cmd"><div class="cmd-head"><strong>Verify checksums</strong><span>before using downloaded artifacts</span></div><pre><code id="checksum-command">curl -fsSLO https://dots.paroslab.io/latest/checksums.txt
+sha256sum -c checksums.txt --ignore-missing</code></pre></div>
+        </div>
+      </div>
+    </section>
   </main>
+  <footer class="footer"><div class="shell"><span>Hosted on Kubernetes at <strong>dots.paroslab.io</strong>.</span><span><a href="https://github.com/christopher-paro/paro">Public repo</a> · <a href="/install">Installer</a> · <a href="/latest/checksums.txt">Checksums</a></span></div></footer>
+  <script>
+    const versions = {
+      latest: {
+        title: 'Latest release',
+        cmdTitle: 'Install latest',
+        cmdSubtitle: 'tracks newest release',
+        command: 'curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite',
+        checksums: 'curl -fsSLO https://dots.paroslab.io/latest/checksums.txt\nsha256sum -c checksums.txt --ignore-missing'
+      },
+      'v0.1.0': {
+        title: 'v0.1.0',
+        cmdTitle: 'Install v0.1.0',
+        cmdSubtitle: 'pinned immutable release',
+        command: 'curl -fsSL https://github.com/christopher-paro/paro/releases/download/v0.1.0/boot.sh | sh -s -- --profile lite',
+        checksums: 'curl -fsSLO https://github.com/christopher-paro/paro/releases/download/v0.1.0/checksums.txt\nsha256sum -c checksums.txt --ignore-missing'
+      }
+    };
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const v = versions[tab.dataset.version];
+        document.getElementById('version-title').textContent = v.title;
+        document.getElementById('version-cmd-title').textContent = v.cmdTitle;
+        document.getElementById('version-cmd-subtitle').textContent = v.cmdSubtitle;
+        document.getElementById('version-command').textContent = v.command;
+        document.getElementById('checksum-command').textContent = v.checksums;
+      });
+    });
+    document.querySelectorAll('.copy').forEach(button => {
+      button.addEventListener('click', async () => {
+        const id = button.dataset.copy;
+        const value = document.getElementById(id).textContent;
+        try { await navigator.clipboard.writeText(value); button.textContent = 'Copied'; setTimeout(() => button.textContent = 'Copy', 1200); }
+        catch { button.textContent = 'Select'; }
+      });
+    });
+  </script>
 </body>
 </html>

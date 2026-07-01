@@ -1,4 +1,4 @@
-# paro
+# dots / paro
 
 Tokenless install channel for [paro](https://github.com/christopher-paro/.paro) dotfiles.
 
@@ -7,7 +7,7 @@ Tokenless install channel for [paro](https://github.com/christopher-paro/.paro) 
 Preferred personal-domain entrypoint:
 
 ```sh
-curl -fsSL https://paro.paroslab.io/install | sh -s -- --profile lite
+curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
 ```
 
 GitHub Releases fallback:
@@ -23,11 +23,38 @@ Installs:
 - `~/.config/nvim` (the real config, via the `.lite` overlay)
 - `~/.config/paro-keymaps/` (fish abbrevs + tmux binds safe for containers)
 
-No GitHub authentication required.
+No GitHub authentication required for the `lite` profile.
+
+## Commands
+
+```sh
+# Lite/public profile
+curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
+
+# Full/private profile, prompts for or discovers a GitHub token
+curl -fsSL https://dots.paroslab.io/install | sh
+
+# Work overlay
+curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile work
+
+# Dry run
+curl -fsSL https://dots.paroslab.io/install | sh -s -- --dry-run --profile lite
+
+# Local testing
+sh boot.sh --local /path/to/paro/repo --profile lite
+```
+
+## Versioned installs
+
+```sh
+curl -fsSL https://github.com/christopher-paro/paro/releases/download/v0.1.0/boot.sh | sh -s -- --profile lite
+```
+
+The website at `https://dots.paroslab.io` includes a version tab so older releases can keep their install command and docs visible as more releases are published.
 
 ## Domain hosting
 
-`paro.paroslab.io` is hosted from the personal Kubernetes cluster through the ops GitOps repo.
+`dots.paroslab.io` is hosted from the personal Kubernetes cluster through the ops GitOps repo.
 
 See [KUBERNETES.md](./KUBERNETES.md).
 

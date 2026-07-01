@@ -2,8 +2,8 @@
 # paro bootstrap: download the prebuilt paro binary and run the installer.
 #
 # Usage:
-#   curl -fsSL https://github.com/christopher-paro/paro/releases/latest/download/boot.sh | sh
-#   curl -fsSL <url>/boot.sh | sh -s -- --profile lite
+#   curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
+#   curl -fsSL https://github.com/christopher-paro/paro/releases/latest/download/boot.sh | sh -s -- --profile lite
 #   sh boot.sh --dry-run [--profile <name>]
 #   sh boot.sh --local /path/to/paro/repo --profile lite    # skip download; use local repo
 #

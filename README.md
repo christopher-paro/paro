@@ -4,7 +4,7 @@ Tokenless install channel for [paro](https://github.com/christopher-paro/.paro) 
 
 ## Install
 
-Preferred personal-domain entrypoint, once the Cloudflare Pages custom domain is attached:
+Preferred personal-domain entrypoint:
 
 ```sh
 curl -fsSL https://paro.paroslab.io/install | sh -s -- --profile lite
@@ -25,11 +25,11 @@ Installs:
 
 No GitHub authentication required.
 
-## Cloudflare hosting
+## Domain hosting
 
-This repo is designed to be connected directly to Cloudflare Pages and served at `paro.paroslab.io`.
+`paro.paroslab.io` is hosted from the personal Kubernetes cluster through the ops GitOps repo.
 
-See [CLOUDFLARE.md](./CLOUDFLARE.md).
+See [KUBERNETES.md](./KUBERNETES.md).
 
 ## Everything else
 

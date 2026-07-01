@@ -2,19 +2,34 @@
 
 Tokenless install channel for [paro](https://github.com/christopher-paro/.paro) dotfiles.
 
-## Container / minimal install
+## Install
+
+Preferred personal-domain entrypoint, once the Cloudflare Pages custom domain is attached:
+
+```sh
+curl -fsSL https://paro.paroslab.io/install | sh -s -- --profile lite
+```
+
+GitHub Releases fallback:
 
 ```sh
 curl -fsSL https://github.com/christopher-paro/paro/releases/latest/download/boot.sh | sh -s -- --profile lite
 ```
 
 Installs:
+
 - `paro` CLI binary (`~/.local/bin/paro`)
 - neovim + ripgrep + fd + fzf + bat + eza
 - `~/.config/nvim` (the real config, via the `.lite` overlay)
 - `~/.config/paro-keymaps/` (fish abbrevs + tmux binds safe for containers)
 
 No GitHub authentication required.
+
+## Cloudflare hosting
+
+This repo is designed to be connected directly to Cloudflare Pages and served at `paro.paroslab.io`.
+
+See [CLOUDFLARE.md](./CLOUDFLARE.md).
 
 ## Everything else
 

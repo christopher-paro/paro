@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>paro install</title>
+  <style>
+    :root { color-scheme: dark; --bg:#080b10; --panel:#111827; --line:#263244; --text:#f2f7ff; --muted:#9aa8ba; --green:#47e38a; --blue:#7cb7ff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: radial-gradient(circle at 20% 0%, #183454 0, #080b10 46%, #050608 100%); color: var(--text); font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; }
+    main { width: min(880px, calc(100vw - 32px)); padding: 36px; border: 1px solid var(--line); border-radius: 24px; background: rgba(17,24,39,.82); box-shadow: 0 24px 80px rgba(0,0,0,.4); }
+    h1 { margin: 0 0 8px; font-size: clamp(40px, 8vw, 80px); letter-spacing: -.06em; }
+    p { color: var(--muted); margin: 8px 0 22px; }
+    pre { overflow: auto; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: #05070b; color: var(--green); }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    a { color: var(--blue); }
+    .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 24px; }
+    .card { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.03); }
+    .label { color: var(--text); font-weight: 700; }
+    .small { font-size: 14px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>paro</h1>
+    <p>Tokenless install channel for Christopher Paro's public/lite dotfiles bundle.</p>
+    <pre><code>curl -fsSL https://paro.paroslab.io/install | sh -s -- --profile lite</code></pre>
+    <div class="grid">
+      <div class="card"><div class="label">Install script</div><div class="small"><a href="/install">/install</a> and <a href="/boot.sh">/boot.sh</a></div></div>
+      <div class="card"><div class="label">Latest assets</div><div class="small"><a href="/latest/checksums.txt">/latest/checksums.txt</a> redirects to the current GitHub release.</div></div>
+      <div class="card"><div class="label">Source</div><div class="small"><a href="https://github.com/christopher-paro/paro">github.com/christopher-paro/paro</a></div></div>
+    </div>
+  </main>
+</body>
+</html>

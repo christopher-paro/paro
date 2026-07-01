@@ -13,6 +13,16 @@ Full private install (requires GitHub token/private repo access):
 Work profile (private + work overlay):
   curl -fsSL https://dots.paro.sh/install | sh -s -- --profile work
 
+Check installed CLI version:
+  paro version
+
+Update the CLI binary:
+  paro self-update
+  # or: paro update --cli
+
+Pinned v0.1.3 lite install:
+  curl -fsSL https://github.com/christopher-paro/paro/releases/download/v0.1.3/boot.sh | sh -s -- --profile lite
+
 Pinned v0.1.1 lite install:
   curl -fsSL https://github.com/christopher-paro/paro/releases/download/v0.1.1/boot.sh | sh -s -- --profile lite
 
@@ -24,6 +34,7 @@ Local repo testing:
 
 Useful endpoints:
   https://dots.paro.sh/commands.txt
+  https://dots.paro.sh/versions.json
   https://dots.paro.sh/install
   https://dots.paro.sh/latest/checksums.txt
   https://github.com/christopher-paro/paro

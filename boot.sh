@@ -2,8 +2,8 @@
 # paro bootstrap: download the prebuilt paro binary and run the installer.
 #
 # Usage:
-#   curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
-#   curl -fsSL https://github.com/christopher-paro/paro/releases/latest/download/boot.sh | sh -s -- --profile lite
+#   curl -fsSL https://github.com/christopher-paro/paro/releases/latest/download/boot.sh | sh
+#   curl -fsSL <url>/boot.sh | sh -s -- --profile lite
 #   sh boot.sh --dry-run [--profile <name>]
 #   sh boot.sh --local /path/to/paro/repo --profile lite    # skip download; use local repo
 #
@@ -59,11 +59,87 @@ case "$(uname -m)" in
 esac
 say "platform: ${os}/${arch}  profile: ${PROFILE}"
 
-# 2. deps
-command -v curl >/dev/null 2>&1 || die "curl is required"
-command -v tar  >/dev/null 2>&1 || die "tar is required"
-# git is only needed for the full/work private-clone fallback and for full-repo mode.
-[ "$PROFILE" = "lite" ] || command -v git >/dev/null 2>&1 || die "git is required for $PROFILE profile"
+# 2. deps — auto-install curl / tar / git / gh via the platform package manager
+#    when missing. `full` and `work` also want gh so we can grab a token for the
+#    private release without prompting; `lite` skips gh entirely.
+_detect_pm() {
+	case "$os" in
+		darwin) command -v brew >/dev/null 2>&1 && echo brew ;;
+		linux)
+			if   command -v apt-get >/dev/null 2>&1; then echo apt
+			elif command -v dnf     >/dev/null 2>&1; then echo dnf
+			elif command -v pacman  >/dev/null 2>&1; then echo pacman
+			fi ;;
+	esac
+}
+_pm="$(_detect_pm)"
+
+_sudo=""
+if [ "$(id -u)" != "0" ] && command -v sudo >/dev/null 2>&1; then
+	_sudo="sudo"
+fi
+
+# Map a tool name to the correct package name for the current PM.
+_pkg_name() {
+	tool="$1"
+	case "${_pm}:${tool}" in
+		apt:gh|dnf:gh|pacman:gh|brew:gh) echo gh ;;
+		apt:git) echo git ;;
+		apt:curl) echo curl ;;
+		apt:tar) echo tar ;;
+		dnf:*|pacman:*|brew:*) echo "$tool" ;;
+		*) echo "$tool" ;;
+	esac
+}
+
+_install_pkg() {
+	tool="$1"
+	pkg="$(_pkg_name "$tool")"
+	if [ -z "$_pm" ]; then
+		die "$tool is required but no supported package manager found (need apt/dnf/pacman/brew)"
+	fi
+	say "installing $tool via $_pm"
+	case "$_pm" in
+		apt)    $_sudo apt-get update -qq && $_sudo apt-get install -y "$pkg" ;;
+		dnf)    $_sudo dnf install -y "$pkg" ;;
+		pacman) $_sudo pacman -S --needed --noconfirm "$pkg" ;;
+		brew)
+			if ! command -v brew >/dev/null 2>&1; then
+				say "installing Homebrew (macOS)"
+				/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+			fi
+			brew install "$pkg" ;;
+	esac
+}
+
+_ensure_tool() {
+	tool="$1"
+	if command -v "$tool" >/dev/null 2>&1; then return 0; fi
+	# On Debian/Ubuntu, `gh` needs the GitHub apt source. Install via the
+	# upstream one-liner instead of assuming the distro packages it.
+	if [ "$tool" = "gh" ] && [ "$_pm" = "apt" ]; then
+		say "installing gh from the official GitHub CLI apt source"
+		(
+			set -e
+			$_sudo mkdir -p -m 755 /etc/apt/keyrings
+			curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+				| $_sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg >/dev/null
+			$_sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+			echo "deb [arch=$(dpkg --print-architecture 2>/dev/null || echo amd64) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+				| $_sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
+			$_sudo apt-get update -qq
+			$_sudo apt-get install -y gh
+		) && return 0
+	fi
+	_install_pkg "$tool"
+}
+
+_ensure_tool curl
+_ensure_tool tar
+if [ "$PROFILE" != "lite" ]; then
+	_ensure_tool git
+	_ensure_tool gh
+fi
 
 # 3. Local mode (testing): skip all downloads
 if [ -n "$LOCAL_DIR" ]; then
@@ -123,6 +199,13 @@ fi
 token=""
 if command -v gh >/dev/null 2>&1; then
 	token="$(gh auth token 2>/dev/null || true)"
+	# gh present but not authed — kick off the interactive login flow.
+	if [ -z "$token" ] && [ "$DRY_RUN" -eq 0 ]; then
+		say "gh is not authenticated; running 'gh auth login' interactively"
+		say "(choose 'GitHub.com', pick SSH or HTTPS, and complete the browser flow)"
+		gh auth login || die "gh auth login failed; rerun boot.sh after resolving"
+		token="$(gh auth token 2>/dev/null || true)"
+	fi
 fi
 if [ -z "$token" ] && [ "$DRY_RUN" -eq 0 ]; then
 	printf 'GitHub token (repo scope, for PRIVATE release download): '

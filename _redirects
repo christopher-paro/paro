@@ -1,4 +1,0 @@
-/install  /boot.sh  200
-/latest/* https://github.com/christopher-paro/paro/releases/latest/download/:splat 302
-/releases/latest/download/* https://github.com/christopher-paro/paro/releases/latest/download/:splat 302
-/gh https://github.com/christopher-paro/paro 302

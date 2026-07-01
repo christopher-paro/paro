@@ -7,7 +7,7 @@ Tokenless install channel for [paro](https://github.com/christopher-paro/.paro) 
 Preferred personal-domain entrypoint:
 
 ```sh
-curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
+curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite
 ```
 
 GitHub Releases fallback:
@@ -30,21 +30,21 @@ No GitHub authentication required for the `lite` profile.
 Quick command sheet from any terminal:
 
 ```sh
-curl -fsSL https://dots.paroslab.io
+curl -fsSL https://dots.paro.sh
 ```
 
 ```sh
 # Lite/public profile
-curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
+curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite
 
 # Full/private profile, prompts for or discovers a GitHub token
-curl -fsSL https://dots.paroslab.io/install | sh
+curl -fsSL https://dots.paro.sh/install | sh
 
 # Work overlay
-curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile work
+curl -fsSL https://dots.paro.sh/install | sh -s -- --profile work
 
 # Dry run
-curl -fsSL https://dots.paroslab.io/install | sh -s -- --dry-run --profile lite
+curl -fsSL https://dots.paro.sh/install | sh -s -- --dry-run --profile lite
 
 # Local testing
 sh boot.sh --local /path/to/paro/repo --profile lite
@@ -56,11 +56,11 @@ sh boot.sh --local /path/to/paro/repo --profile lite
 curl -fsSL https://github.com/christopher-paro/paro/releases/download/v0.1.0/boot.sh | sh -s -- --profile lite
 ```
 
-The website at `https://dots.paroslab.io` includes a version tab so older releases can keep their install command and docs visible as more releases are published.
+The website at `https://dots.paro.sh` includes a version tab so older releases can keep their install command and docs visible as more releases are published.
 
 ## Domain hosting
 
-`dots.paroslab.io` is hosted from the personal Kubernetes cluster through the ops GitOps repo.
+`dots.paro.sh` is hosted from the personal Kubernetes cluster through the ops GitOps repo.
 
 See [KUBERNETES.md](./KUBERNETES.md).
 

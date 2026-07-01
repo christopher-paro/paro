@@ -124,8 +124,8 @@
         <div class="actions"><a class="button primary" href="#install">Start install</a><a class="button" href="#versions">Pick a version</a><a class="button" href="/gh">View source</a></div>
       </div>
       <div class="terminal-card" aria-label="install command terminal">
-        <div class="term-top"><div class="dots"><span></span><span></span><span></span></div><span>dots.paroslab.io</span></div>
-        <pre><code>$ curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
+        <div class="term-top"><div class="dots"><span></span><span></span><span></span></div><span>dots.paro.sh</span></div>
+        <pre><code>$ curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite
 ==> platform: linux/amd64 profile: lite
 ==> downloading paro binary
 ==> installing nvim + fast CLI defaults</code></pre>
@@ -134,8 +134,8 @@
 
     <section id="install">
       <div class="section-head"><h2>Install</h2><p>Use the lite profile anywhere you want the public, tokenless setup: containers, throwaway machines, servers, or a new workstation baseline.</p></div>
-      <div class="copy-row"><code id="quick-command">curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code><button class="copy" data-copy="quick-command">Copy</button></div>
-      <p class="note">Want the cheat sheet in a terminal? <code>curl -fsSL https://dots.paroslab.io</code> returns plain text commands for quick copy/paste.</p>
+      <div class="copy-row"><code id="quick-command">curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite</code><button class="copy" data-copy="quick-command">Copy</button></div>
+      <p class="note">Want the cheat sheet in a terminal? <code>curl -fsSL https://dots.paro.sh</code> returns plain text commands for quick copy/paste.</p>
       <div class="steps" style="margin-top:18px">
         <div class="step"><strong>Fetch installer</strong><span><code>/install</code> serves the same audited <code>boot.sh</code> script with a shell-script content type.</span></div>
         <div class="step"><strong>Detect platform</strong><span>The script chooses linux/darwin and amd64/arm64 release assets automatically.</span></div>
@@ -153,12 +153,12 @@
         <div class="card"><span class="pill">private · token</span><h3>Work profile</h3><p>Runs the full install with the additional work overlay enabled.</p></div>
       </div>
       <div class="command-list" style="margin-top:16px">
-        <div class="cmd"><div class="cmd-head"><strong>Quick command sheet</strong><span>terminal-friendly plain text</span></div><pre><code>curl -fsSL https://dots.paroslab.io</code></pre></div>
-        <div class="cmd"><div class="cmd-head"><strong>Container / minimal</strong><span>best copy-paste for containers</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code></pre></div>
-        <div class="cmd"><div class="cmd-head"><strong>Lite</strong><span>same public profile, explicit name</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code></pre></div>
-        <div class="cmd"><div class="cmd-head"><strong>Full</strong><span>private release + GitHub token</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh</code></pre></div>
-        <div class="cmd"><div class="cmd-head"><strong>Work</strong><span>private release + work overlay</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile work</code></pre></div>
-        <div class="cmd"><div class="cmd-head"><strong>Dry run</strong><span>show actions without changing files</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --dry-run --profile lite</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Quick command sheet</strong><span>terminal-friendly plain text</span></div><pre><code>curl -fsSL https://dots.paro.sh</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Container / minimal</strong><span>best copy-paste for containers</span></div><pre><code>curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Lite</strong><span>same public profile, explicit name</span></div><pre><code>curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Full</strong><span>private release + GitHub token</span></div><pre><code>curl -fsSL https://dots.paro.sh/install | sh</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Work</strong><span>private release + work overlay</span></div><pre><code>curl -fsSL https://dots.paro.sh/install | sh -s -- --profile work</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Dry run</strong><span>show actions without changing files</span></div><pre><code>curl -fsSL https://dots.paro.sh/install | sh -s -- --dry-run --profile lite</code></pre></div>
         <div class="cmd"><div class="cmd-head"><strong>Local testing</strong><span>use a checked-out repo</span></div><pre><code>sh boot.sh --local /path/to/paro/repo --profile lite</code></pre></div>
       </div>
     </section>
@@ -181,22 +181,22 @@
           <p class="note">Pinned installs download <code>boot.sh</code> from the immutable GitHub release tag, while <code>/install</code> tracks the current site bootstrap.</p>
         </div>
         <div class="command-list">
-          <div class="cmd"><div class="cmd-head"><strong id="version-cmd-title">Install latest</strong><span id="version-cmd-subtitle">tracks newest release</span></div><pre><code id="version-command">curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code></pre></div>
-          <div class="cmd"><div class="cmd-head"><strong>Verify checksums</strong><span>before using downloaded artifacts</span></div><pre><code id="checksum-command">curl -fsSLO https://dots.paroslab.io/latest/checksums.txt
+          <div class="cmd"><div class="cmd-head"><strong id="version-cmd-title">Install latest</strong><span id="version-cmd-subtitle">tracks newest release</span></div><pre><code id="version-command">curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite</code></pre></div>
+          <div class="cmd"><div class="cmd-head"><strong>Verify checksums</strong><span>before using downloaded artifacts</span></div><pre><code id="checksum-command">curl -fsSLO https://dots.paro.sh/latest/checksums.txt
 sha256sum -c checksums.txt --ignore-missing</code></pre></div>
         </div>
       </div>
     </section>
   </main>
-  <footer class="footer"><div class="shell"><span>Hosted on Kubernetes at <strong>dots.paroslab.io</strong>.</span><span><a href="/commands.txt">Curl commands</a> · <a href="https://github.com/christopher-paro/paro">Public repo</a> · <a href="/install">Installer</a> · <a href="/latest/checksums.txt">Checksums</a></span></div></footer>
+  <footer class="footer"><div class="shell"><span>Hosted on Kubernetes at <strong>dots.paro.sh</strong>.</span><span><a href="/commands.txt">Curl commands</a> · <a href="https://github.com/christopher-paro/paro">Public repo</a> · <a href="/install">Installer</a> · <a href="/latest/checksums.txt">Checksums</a></span></div></footer>
   <script>
     let versions = {
       latest: {
         title: 'Latest release',
         cmdTitle: 'Install latest',
         cmdSubtitle: 'tracks newest release',
-        command: 'curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite',
-        checksums: 'curl -fsSLO https://dots.paroslab.io/latest/checksums.txt\nsha256sum -c checksums.txt --ignore-missing'
+        command: 'curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite',
+        checksums: 'curl -fsSLO https://dots.paro.sh/latest/checksums.txt\nsha256sum -c checksums.txt --ignore-missing'
       },
       'v0.1.1': {
         title: 'v0.1.1',

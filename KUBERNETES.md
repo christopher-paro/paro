@@ -1,6 +1,6 @@
 # Kubernetes hosting
 
-`https://dots.paroslab.io` is hosted from the personal Kubernetes cluster.
+`https://dots.paro.sh` is hosted from the personal Kubernetes cluster.
 
 The GitOps app lives in the ops repo at:
 
@@ -11,12 +11,12 @@ The GitOps app lives in the ops repo at:
 ## Install URL
 
 ```sh
-curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
+curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite
 ```
 
 Routes are GitOps-managed from `~/dev/personal/ops/apps/paro/deploy`.
 
-The Kubernetes deployment includes a tiny release-sync sidecar that polls the public GitHub releases API about every 10 minutes and writes generated `/versions.json` and `/commands.txt` files. That means the browser version tabs and `curl https://dots.paroslab.io` command sheet pick up newly published public releases without editing the static HTML each time.
+The Kubernetes deployment includes a tiny release-sync sidecar that polls the public GitHub releases API about every 10 minutes and writes generated `/versions.json` and `/commands.txt` files. That means the browser version tabs and `curl https://dots.paro.sh` command sheet pick up newly published public releases without editing the static HTML each time.
 
 ## Routes
 
@@ -34,9 +34,9 @@ The binary and tarball artifacts still live in GitHub Releases. Kubernetes hosts
 ## Smoke checks
 
 ```sh
-curl -fsSI https://dots.paroslab.io/
-curl -fsSL https://dots.paroslab.io/
-curl -fsSL https://dots.paroslab.io/versions.json
-curl -fsSL https://dots.paroslab.io/install | sh -s -- --dry-run --profile lite
-curl -fsSI https://dots.paroslab.io/latest/checksums.txt
+curl -fsSI https://dots.paro.sh/
+curl -fsSL https://dots.paro.sh/
+curl -fsSL https://dots.paro.sh/versions.json
+curl -fsSL https://dots.paro.sh/install | sh -s -- --dry-run --profile lite
+curl -fsSI https://dots.paro.sh/latest/checksums.txt
 ```

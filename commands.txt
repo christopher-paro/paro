@@ -1,17 +1,17 @@
 dots — Paro dotfiles quick install
-https://dots.paroslab.io
+https://dots.paro.sh
 
 Container / minimal install (public, no token):
-  curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite
+  curl -fsSL https://dots.paro.sh/install | sh -s -- --profile lite
 
 Dry run first:
-  curl -fsSL https://dots.paroslab.io/install | sh -s -- --dry-run --profile lite
+  curl -fsSL https://dots.paro.sh/install | sh -s -- --dry-run --profile lite
 
 Full private install (requires GitHub token/private repo access):
-  curl -fsSL https://dots.paroslab.io/install | sh
+  curl -fsSL https://dots.paro.sh/install | sh
 
 Work profile (private + work overlay):
-  curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile work
+  curl -fsSL https://dots.paro.sh/install | sh -s -- --profile work
 
 Pinned v0.1.1 lite install:
   curl -fsSL https://github.com/christopher-paro/paro/releases/download/v0.1.1/boot.sh | sh -s -- --profile lite
@@ -23,9 +23,9 @@ Local repo testing:
   sh boot.sh --local /path/to/paro/repo --profile lite
 
 Useful endpoints:
-  https://dots.paroslab.io/commands.txt
-  https://dots.paroslab.io/install
-  https://dots.paroslab.io/latest/checksums.txt
+  https://dots.paro.sh/commands.txt
+  https://dots.paro.sh/install
+  https://dots.paro.sh/latest/checksums.txt
   https://github.com/christopher-paro/paro
 
-Tip: plain `curl -fsSL https://dots.paroslab.io` returns this quick command sheet.
+Tip: plain `curl -fsSL https://dots.paro.sh` returns this quick command sheet.

@@ -27,6 +27,12 @@ No GitHub authentication required for the `lite` profile.
 
 ## Commands
 
+Quick command sheet from any terminal:
+
+```sh
+curl -fsSL https://dots.paroslab.io
+```
+
 ```sh
 # Lite/public profile
 curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite

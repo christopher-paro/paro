@@ -111,7 +111,7 @@
     <div class="shell nav-inner">
       <a class="brand" href="#top" aria-label="dots home"><span class="logo">·</span><span>dots</span></a>
       <div class="nav-links">
-        <a href="#install">Install</a><a href="#commands">Commands</a><a href="#versions">Versions</a><a href="https://github.com/christopher-paro/paro">GitHub</a>
+        <a href="#install">Install</a><a href="#commands">Commands</a><a href="/commands.txt">Curl</a><a href="#versions">Versions</a><a href="https://github.com/christopher-paro/paro">GitHub</a>
       </div>
     </div>
   </nav>
@@ -135,6 +135,7 @@
     <section id="install">
       <div class="section-head"><h2>Install</h2><p>Use the lite profile anywhere you want the public, tokenless setup: containers, throwaway machines, servers, or a new workstation baseline.</p></div>
       <div class="copy-row"><code id="quick-command">curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code><button class="copy" data-copy="quick-command">Copy</button></div>
+      <p class="note">Want the cheat sheet in a terminal? <code>curl -fsSL https://dots.paroslab.io</code> returns plain text commands for quick copy/paste.</p>
       <div class="steps" style="margin-top:18px">
         <div class="step"><strong>Fetch installer</strong><span><code>/install</code> serves the same audited <code>boot.sh</code> script with a shell-script content type.</span></div>
         <div class="step"><strong>Detect platform</strong><span>The script chooses linux/darwin and amd64/arm64 release assets automatically.</span></div>
@@ -146,12 +147,15 @@
     <section id="commands">
       <div class="section-head"><h2>Commands</h2><p>These are the existing bootstrap modes exposed by <code>boot.sh</code>. Lite is public; full and work use the private dotfiles release or authenticated fallback.</p></div>
       <div class="grid">
+        <div class="card"><span class="pill">public · no token</span><h3>Container / minimal</h3><p>The copy-paste default for containers and new shells: curl the installer and run the lite profile.</p></div>
         <div class="card"><span class="pill">public · no token</span><h3>Lite install</h3><p>Installs the CLI, Neovim, fast search tools, and safe keymaps.</p></div>
         <div class="card"><span class="pill">private · token</span><h3>Full install</h3><p>Installs the private desktop/dev environment from <code>christopher-paro/.paro</code>.</p></div>
         <div class="card"><span class="pill">private · token</span><h3>Work profile</h3><p>Runs the full install with the additional work overlay enabled.</p></div>
       </div>
       <div class="command-list" style="margin-top:16px">
-        <div class="cmd"><div class="cmd-head"><strong>Lite</strong><span>recommended public path</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Quick command sheet</strong><span>terminal-friendly plain text</span></div><pre><code>curl -fsSL https://dots.paroslab.io</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Container / minimal</strong><span>best copy-paste for containers</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code></pre></div>
+        <div class="cmd"><div class="cmd-head"><strong>Lite</strong><span>same public profile, explicit name</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile lite</code></pre></div>
         <div class="cmd"><div class="cmd-head"><strong>Full</strong><span>private release + GitHub token</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh</code></pre></div>
         <div class="cmd"><div class="cmd-head"><strong>Work</strong><span>private release + work overlay</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --profile work</code></pre></div>
         <div class="cmd"><div class="cmd-head"><strong>Dry run</strong><span>show actions without changing files</span></div><pre><code>curl -fsSL https://dots.paroslab.io/install | sh -s -- --dry-run --profile lite</code></pre></div>
@@ -183,7 +187,7 @@ sha256sum -c checksums.txt --ignore-missing</code></pre></div>
       </div>
     </section>
   </main>
-  <footer class="footer"><div class="shell"><span>Hosted on Kubernetes at <strong>dots.paroslab.io</strong>.</span><span><a href="https://github.com/christopher-paro/paro">Public repo</a> · <a href="/install">Installer</a> · <a href="/latest/checksums.txt">Checksums</a></span></div></footer>
+  <footer class="footer"><div class="shell"><span>Hosted on Kubernetes at <strong>dots.paroslab.io</strong>.</span><span><a href="/commands.txt">Curl commands</a> · <a href="https://github.com/christopher-paro/paro">Public repo</a> · <a href="/install">Installer</a> · <a href="/latest/checksums.txt">Checksums</a></span></div></footer>
   <script>
     const versions = {
       latest: {

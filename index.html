@@ -190,7 +190,7 @@ sha256sum -c checksums.txt --ignore-missing</code></pre></div>
   </main>
   <footer class="footer"><div class="shell"><span>Hosted on Kubernetes at <strong>dots.paroslab.io</strong>.</span><span><a href="/commands.txt">Curl commands</a> · <a href="https://github.com/christopher-paro/paro">Public repo</a> · <a href="/install">Installer</a> · <a href="/latest/checksums.txt">Checksums</a></span></div></footer>
   <script>
-    const versions = {
+    let versions = {
       latest: {
         title: 'Latest release',
         cmdTitle: 'Install latest',
@@ -213,18 +213,59 @@ sha256sum -c checksums.txt --ignore-missing</code></pre></div>
         checksums: 'curl -fsSLO https://github.com/christopher-paro/paro/releases/download/v0.1.0/checksums.txt\nsha256sum -c checksums.txt --ignore-missing'
       }
     };
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const v = versions[tab.dataset.version];
-        document.getElementById('version-title').textContent = v.title;
-        document.getElementById('version-cmd-title').textContent = v.cmdTitle;
-        document.getElementById('version-cmd-subtitle').textContent = v.cmdSubtitle;
-        document.getElementById('version-command').textContent = v.command;
-        document.getElementById('checksum-command').textContent = v.checksums;
+
+    function selectVersion(key) {
+      const v = versions[key] || versions.latest;
+      document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.version === key));
+      document.getElementById('version-title').textContent = v.title;
+      document.getElementById('version-cmd-title').textContent = v.cmdTitle;
+      document.getElementById('version-cmd-subtitle').textContent = v.cmdSubtitle;
+      document.getElementById('version-command').textContent = v.command;
+      document.getElementById('checksum-command').textContent = v.checksums;
+    }
+
+    function bindTabs() {
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => selectVersion(tab.dataset.version));
       });
-    });
+    }
+
+    async function loadReleaseTabs() {
+      try {
+        const res = await fetch('/versions.json', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!Array.isArray(data.releases) || data.releases.length === 0) return;
+        const next = { latest: versions.latest };
+        const tabs = document.querySelector('.tabs');
+        tabs.innerHTML = '<button class="tab active" type="button" role="tab" data-version="latest">Latest</button>';
+        for (const rel of data.releases.slice(0, 8)) {
+          next[rel.tag] = {
+            title: rel.tag,
+            cmdTitle: `Install ${rel.tag}`,
+            cmdSubtitle: 'pinned immutable release',
+            command: rel.install,
+            checksums: rel.checksums
+          };
+          const btn = document.createElement('button');
+          btn.className = 'tab';
+          btn.type = 'button';
+          btn.role = 'tab';
+          btn.dataset.version = rel.tag;
+          btn.textContent = rel.tag;
+          tabs.appendChild(btn);
+        }
+        versions = next;
+        bindTabs();
+        selectVersion('latest');
+      } catch (_) {
+        // Static fallback tabs remain usable when release metadata cannot be fetched.
+      }
+    }
+
+    bindTabs();
+    loadReleaseTabs();
+
     document.querySelectorAll('.copy').forEach(button => {
       button.addEventListener('click', async () => {
         const id = button.dataset.copy;
